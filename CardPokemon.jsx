@@ -33,10 +33,12 @@ const CardPokemon = () => {
 
   const fetchData = async (url) => {
     try {
+      setPageStatus(false);
       const response = await fetch(url);
       const data = await response.json();
       setNextPage(data.next ? data.next : "");
       setPrePage(data.previous ? data.previous : "");
+      
       // get data
       const promises = data.results.map(async (element) => {
         const res = await fetch(element.url);
@@ -89,7 +91,51 @@ const CardPokemon = () => {
     <>
       <div className='min-h-screen font-sans pb-8 pt-28 bg-[#696666]'>
         <div className='grid sm:grid-cols-2 xl:grid-cols-4 gap-x-4 xl:gap-x-10 gap-y-4 justify-items-center '>
-          {datas.map((element) => {
+        {!pageStatus?
+        Array.from({ length: 8 }).map((_, index) => (
+          <div key={index} className='w-[290px] h-[370px] border-8 border-black hover:shadow-xl hover:scale-105'>
+                <div className={`animate-pulse bg-white w-full h-[155px] mx-auto p-2`}></div>
+                <div className='bg-[#C4C4C4] h-[200px]'>
+                  <div className='ps-2 pt-5 capitalize'>
+                    <p className='text-2xl font-bold'></p>
+                    <div className=' flex text-center text-sm mt-2'>
+                      <p
+                          className={`ms-1 py-1 font-medium w-16 rounded-full text-white`}
+                        >
+                          
+                        </p>
+                      
+                    </div>
+                  </div>
+                  <div
+                    className={`animate-pulse mt-3 grid grid-cols-2 gap-4  justify-items-center text-lg`}
+                  >
+                    <div>
+                      <p className='mb-1'>
+                        <span className='font-semibold'>HP: </span>
+                      </p>
+                      <p className='mb-1'>
+                        <span className='font-semibold'>ATK: </span>
+                      </p>
+                      <p>
+                        <span className='font-semibold'>DEF: </span>
+                      </p>
+                    </div>
+                    <div>
+                      <p className='mb-1'>
+                        <span className='font-semibold'>SP-ATK: </span>
+                      </p>
+                      <p className='mb-1'>
+                        <span className='font-semibold'>SP-DEF: </span>
+                      </p>
+                      <p>
+                        <span className='font-semibold'>SPEES: </span>
+                      </p>
+                    </div>
+                  </div>
+                </div>
+          </div>)):
+        datas.map((element) => {
             return (
               <div
                 key={element.id}
@@ -169,7 +215,8 @@ const CardPokemon = () => {
                 </div>
               </div>
             );
-          })}
+          })
+          }
         </div>
         <div className='flex justify-center text-center mt-10'>
           <button
